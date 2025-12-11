@@ -8,8 +8,8 @@ from engine.search import NegamaxEngine
 # Visual configuration
 SQUARE_SIZE = 80
 BOARD_SIZE = SQUARE_SIZE * 8
-LIGHT_COLOR = "#f0d9b5"
-DARK_COLOR = "#b58863"
+LIGHT_COLOR = "#b58863"
+DARK_COLOR = "#f0d9b5"
 
 # Pieces Unicode
 WHITE_PIECES = {
@@ -187,7 +187,7 @@ class ChessGUI:
             Parameters:
                 - move: chess.Move instance
             Returns:
-                - str: encoded move sequence (e.g., 'a2a3', 'a5i1b6a5', 'a7j1k1a8', 'a8l3b7j1n1a8')
+                - str: encoded move sequence (e.g., 'a2a3', 'a5i1b6a5', 'a7j1k1a8', 'a5l1m1b6j1k1a8')
         """
 
         # Basic from/to squares
