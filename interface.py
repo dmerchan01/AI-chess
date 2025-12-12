@@ -5,6 +5,9 @@ import os
 from engine.evaluation import Evaluator
 from engine.search import NegamaxEngine
 
+# Import the new file .py
+from FuncionCrearPuntos import generar_archivo_robot
+
 # Visual configuration
 SQUARE_SIZE = 80
 BOARD_SIZE = SQUARE_SIZE * 8
@@ -38,9 +41,13 @@ class ChessGUI:
         - finalMove.txt   -> to-square   (e.g., 'a5')
         The game only continues when both files have been deleted.
     """
+    #NEW CHANGE
+    ROBOT_DIR = r"X:\EpsonRC70\Projects\chess_arm_robot"
 
     # Constructor
     def __init__(self, root: tk.Tk):
+        
+        # Initialize root window
         self.root = root
         self.root.title("AI Chess - Human vs Computer")
 
@@ -254,13 +261,17 @@ class ChessGUI:
 
         # Determine filename based on move kind
         if kind == "move":
+            type = 0
             fname = "move.txt"
         elif kind == "capture":
+            type = 1
             fname = "capture.txt"
         elif kind == "promotion":
+            type = 2
             fname = "promotion.txt"
         else:
-            fname = "capturedAndPromoted.txt"
+            type = 3
+            fname = "captured_promotion.txt"
 
         # Save current move filename
         self.current_move_filename = fname
@@ -268,9 +279,11 @@ class ChessGUI:
         # Obtain encoded sequence
         sequence = self.encode_robot_sequence(move)
 
+        generar_archivo_robot(sequence, type)
+
         # Write to file
-        with open(fname, "w", encoding="utf-8") as f:
-            f.write(sequence)
+        # with open(fname, "w", encoding="utf-8") as f:
+        #     f.write(sequence)
 
         # Debug print
         print(f"[File] {fname} = {sequence}")
@@ -288,9 +301,15 @@ class ChessGUI:
 
         # Get current move filename
         fname = self.current_move_filename
+        if not fname:
+            callback()
+            return
+
+        fullpath = os.path.join(self.ROBOT_DIR, fname)
+        exists = os.path.exists(fullpath)
 
         # Check if file still exists
-        exists = os.path.exists(fname)
+        # exists = os.path.exists(fname)
 
         # If not exists, call callback; else, check again after delay
         if not exists:
